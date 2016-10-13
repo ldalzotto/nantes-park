@@ -1,3 +1,3 @@
 <sebm-google-map [latitude]="lat" [longitude]="lng">
-    <sebm-google-map-marker [latitude]="lat" [longitude]="lng"></sebm-google-map-marker>
+    <sebm-google-map-marker *ngFor="let park of parkList" [latitude]="park.location[0]" [longitude]="park.location[1]"></sebm-google-map-marker>
 </sebm-google-map>

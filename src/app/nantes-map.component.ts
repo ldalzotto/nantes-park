@@ -11,15 +11,32 @@ import {MarkerManager, SebmGoogleMapMarker} from "angular2-google-maps/core";
   templateUrl: './nantes-map.component.html',
   styleUrls: ['./nantes-map.component.css']
 })
-export class NantesMapComponent {
+export class NantesMapComponent implements OnInit{
 
+  private parkList : Array<any>;
 
   lat: number = NantesCoord[0];
   lng: number = NantesCoord[1];
   
-  public updateMap(parkList: any){
+  public updateMap(parkList: Array<any>){
     console.log("updating map");
-    console.log(parkList);
+    this.parkList = parkList;
+    //this.mapToArray(parkListMap).then((result) => this.parkList = result);
+  }
+
+  ngOnInit(){
+    this.parkList = new Array();
+  }
+
+  private mapToArray(myMap : Map<any, any>) :Promise<Array<any>>{
+    return new Promise((resolve, reject) => {
+      let _parkList;
+      myMap.forEach((valeur, cle) => {
+        _parkList.push(valeur);
+      });
+      resolve(_parkList);
+    })
+
   }
 
 }

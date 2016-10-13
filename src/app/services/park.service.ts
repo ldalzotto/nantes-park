@@ -23,7 +23,7 @@ export class ParkService {
   }
 
   private extractData(res: Response) {
-    let body = res.json();
+    let body = JSON.parse(res.text());
     return body;
   }
 
@@ -32,7 +32,9 @@ export class ParkService {
     return Observable.throw(error);
   }
 
-  getParksFromGenericOpenData(genericOpenData: GenericOpenData): Observable<Parking> {
+  getParksFromGenericOpenData(genericOpenData: GenericOpenData): Observable<Map<any,any>> {
+    console.log("getting park from generic data : ");
+    console.log(genericOpenData);
     return this.http.post(this.parkingApiUrl, genericOpenData.opendata.answer.data.Groupes_Parking.Groupe_Parking)
           .map(this.extractData)
           .catch(this.handleError)
