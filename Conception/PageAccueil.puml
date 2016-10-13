@@ -1,0 +1,12 @@
+@startuml
+salt
+{
+  Bienvenue sur le site des place de parking à nantes
+  { Sélectionne ta ville : | ^Ville^ }
+  {#
+  Ecran de google map
+  affichant les parkings
+  pour la ville désignée
+  }
+}
+@enduml
