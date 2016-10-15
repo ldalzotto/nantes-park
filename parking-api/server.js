@@ -35,6 +35,13 @@ router.route('/park-from-raw-data')
             });
         });
 
+router.route('/parking/from-park-id')
+    .get(function(req,res){
+        parkService.getParkingDataInfo(req.query.parkid).then((result) => {
+            res.end(stringify(result));
+        })
+});
+
 
 // REGISTER OUR ROUTES -------------------------------
 // all of our routes will be prefixed with /api

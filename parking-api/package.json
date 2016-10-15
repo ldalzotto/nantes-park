@@ -6,6 +6,7 @@
         "mongoose": "~3.6.13",
         "body-parser": "~1.0.1",
         "fast-csv": "2.3.0",
-        "stringify-json": "~1.0.0"
+        "stringify-json": "~1.0.0",
+        "rxjs-es": "~5.0.0-beta.12"
     }
 }
