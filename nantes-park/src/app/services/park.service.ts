@@ -42,4 +42,8 @@ export class ParkService {
           .catch(this.handleError)
   }
 
+  getParkInfoDataFromId(){
+
+  }
+
 }

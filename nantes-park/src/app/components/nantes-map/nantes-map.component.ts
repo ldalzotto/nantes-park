@@ -4,19 +4,24 @@
 import { Component, EventEmitter, Input, Output } from '@angular/core';
 import {OnInit} from "@angular/core";
 import { NantesCoord } from '../../nantes-park.constants';
+import {ParkService} from "../../services/park.service";
 import {MarkerManager, SebmGoogleMapMarker} from "angular2-google-maps/core";
 
 @Component({
   selector: 'nantes-map',
   templateUrl: './nantes-map.component.html',
-  styleUrls: ['./nantes-map.component.css']
+  styleUrls: ['./nantes-map.component.css'],
+  providers: [ParkService]
 })
 export class NantesMapComponent implements OnInit{
 
-  private parkList : Array<any>;
-
   lat: number = NantesCoord[0];
   lng: number = NantesCoord[1];
+
+  constructor(private parkService: ParkService) {
+  }
+
+  private parkList : Array<any>;
 
   public updateMap(parkList: Array<any>){
     console.log("updating map");
@@ -25,17 +30,10 @@ export class NantesMapComponent implements OnInit{
   }
 
   ngOnInit(){
-    this.parkList = new Array();
+    this.parkList = [];
   }
 
-  private mapToArray(myMap : Map<any, any>) :Promise<Array<any>>{
-    return new Promise((resolve, reject) => {
-      let _parkList;
-      myMap.forEach((valeur, cle) => {
-        _parkList.push(valeur);
-      });
-      resolve(_parkList);
-    })
+  public markerClicked(id: number){
 
   }
 

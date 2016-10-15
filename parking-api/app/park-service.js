@@ -51,7 +51,7 @@ function extractDataFromCsv(generalParkData){
                      parkings = generalParkData.body;
                      parkings.forEach((element) => {
                          if(dataLocation.get(element.IdObj) && element.Grp_nom){
-                            var parkingObject = JSON.parse('{"location": '+ dataLocation.get(element.IdObj) + ', "name": "'+ element.Grp_nom +'"}');
+                            var parkingObject = JSON.parse('{"location": '+ dataLocation.get(element.IdObj) + ', "id": "'+ element.IdObj +'"}');
                             filteredLocationData.push(parkingObject);
                          }
                          //TODO utiliser des maps

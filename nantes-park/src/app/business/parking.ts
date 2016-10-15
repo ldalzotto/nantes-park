@@ -4,5 +4,5 @@ export class Parking {
 
 class ParkDetail{
     location: number[];
-    name: string;
+    id: number;
 }
