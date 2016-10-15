@@ -19,6 +19,10 @@ import {EventEmitter, Input, Output } from '@angular/core';
 })
 export class CitySearchBarComponent implements OnInit {
 
+  /**
+   * Emit an array representing the current list of city
+   * @type {EventEmitter}
+   */
   @Output() onMapUpdate = new EventEmitter();
 
   private cities: string[];
@@ -41,9 +45,7 @@ export class CitySearchBarComponent implements OnInit {
     this.parkService.getListOfParkFromCity(this.selectedCity)
       .subscribe(result => {
         this.receivedData = result;
-        console.log(result);
         this.parkService.getParksFromGenericOpenData(this.receivedData).subscribe(result => {
-          console.log(result);
           this.onMapUpdate.emit(result);
         })
       }, error => {this.errorMessage=error;})

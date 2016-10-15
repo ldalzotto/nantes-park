@@ -23,7 +23,9 @@ export class ParkService {
   }
 
   private extractData(res: Response) {
-    let body = JSON.parse(res.text());
+    console.log("Extrancting data from open nantes data...");
+    let body = [];
+    body = JSON.parse(res.text());
     return body;
   }
 
@@ -32,7 +34,7 @@ export class ParkService {
     return Observable.throw(error);
   }
 
-  getParksFromGenericOpenData(genericOpenData: GenericOpenData): Observable<Map<any,any>> {
+  getParksFromGenericOpenData(genericOpenData: GenericOpenData): Observable<Array<any>> {
     console.log("getting park from generic data : ");
     console.log(genericOpenData);
     return this.http.post(this.parkingApiUrl, genericOpenData.opendata.answer.data.Groupes_Parking.Groupe_Parking)

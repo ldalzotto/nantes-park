@@ -3,7 +3,7 @@
  */
 import { Component, EventEmitter, Input, Output } from '@angular/core';
 import {OnInit} from "@angular/core";
-import { NantesCoord } from './nantes-park.constants';
+import { NantesCoord } from '../../nantes-park.constants';
 import {MarkerManager, SebmGoogleMapMarker} from "angular2-google-maps/core";
 
 @Component({
@@ -17,7 +17,7 @@ export class NantesMapComponent implements OnInit{
 
   lat: number = NantesCoord[0];
   lng: number = NantesCoord[1];
-  
+
   public updateMap(parkList: Array<any>){
     console.log("updating map");
     this.parkList = parkList;
