@@ -39,7 +39,7 @@ export class ParkService {
    */
   manageGenericOpenDataCache(){
       this.isGenericOpenDataCached = true;
-      setTimeout(() => this.clearGenericOpenDataCache(), 10000);
+      setTimeout(() => this.clearGenericOpenDataCache(), 300000);
   }
 
   private clearGenericOpenDataCache(){
