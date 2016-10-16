@@ -6,6 +6,7 @@ import {OnInit} from "@angular/core";
 import { NantesCoord } from '../../nantes-park.constants';
 import {ParkService} from "../../services/park.service";
 import {MarkerManager, SebmGoogleMapMarker} from "angular2-google-maps/core";
+import {ParkingsData, ParkingData} from "../../business/parking";
 
 @Component({
   selector: 'nantes-map',
@@ -21,11 +22,11 @@ export class NantesMapComponent implements OnInit{
   constructor(private parkService: ParkService) {
   }
 
-  private parkList : Array<any>;
+  private parkList : Array<ParkingData>;
 
-  public updateMap(parkList: Array<any>){
+  public updateMap(parkList: ParkingsData){
     console.log("updating map");
-    this.parkList = parkList;
+    this.parkList = parkList.parkDataList;
     //this.mapToArray(parkListMap).then((result) => this.parkList = result);
   }
 

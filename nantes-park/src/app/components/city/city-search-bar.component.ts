@@ -8,7 +8,6 @@ import {CITIES} from "../../constants/Cities";
 import {ParkService} from "../../services/park.service";
 import {GenericOpenData} from "../../business/opendata/opendata"
 
-import {Parking} from "../../business/parking"
 import {EventEmitter, Input, Output } from '@angular/core';
 
 @Component({

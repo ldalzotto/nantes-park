@@ -6,7 +6,7 @@ import {Observable} from "rxjs";
 import 'rxjs/add/operator/map'
 import {Http, Response, Headers, RequestOptions } from "@angular/http";
 import {GenericOpenData} from "../business/opendata/opendata";
-import {Parking} from "../business/parking";
+import {ParkingsData} from "../business/parking";
 
 @Injectable()
 export class ParkService {
@@ -34,7 +34,7 @@ export class ParkService {
     return Observable.throw(error);
   }
 
-  getParksFromGenericOpenData(genericOpenData: GenericOpenData): Observable<Array<any>> {
+  getParksFromGenericOpenData(genericOpenData: GenericOpenData): Observable<ParkingsData> {
     console.log("getting park from generic data : ");
     console.log(genericOpenData);
     return this.http.post(this.parkingApiUrl, genericOpenData.opendata.answer.data.Groupes_Parking.Groupe_Parking)

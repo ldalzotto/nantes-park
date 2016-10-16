@@ -1,0 +1,23 @@
+POST localhost:8080/api/park-from-raw-data
+
+[{
+	"Grp_identifiant": "1",
+	"Grp_nom": "FEYDEAU",
+	"Grp_statut": "5",
+	"Grp_pri_aut": "0",
+	"Grp_disponible": "269",
+	"Grp_complet": "10",
+	"Grp_exploitation": "506",
+	"Grp_horodatage": "15/10/2016 06:51:40",
+	"IdObj": "4320"
+}, {
+	"Grp_identifiant": "2",
+	"Grp_nom": "DECRE-BOUFFAY",
+	"Grp_statut": "5",
+	"Grp_pri_aut": "0",
+	"Grp_disponible": "341",
+	"Grp_complet": "10",
+	"Grp_exploitation": "510",
+	"Grp_horodatage": "15/10/2016 06:51:40",
+	"IdObj": "284"
+}]

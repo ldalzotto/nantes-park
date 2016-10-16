@@ -4,7 +4,7 @@
                             [longitude]="park.location[1]"
                             (markerClick) = "markerClicked(park.id)">
         <sebm-google-map-info-window [disableAutoPan]="true">
-          Hi, this is the content {{park.id}} of the <strong>info window</strong>
+          Hi, this is the content {{park.name}} of the <strong>info window</strong>
         </sebm-google-map-info-window>
     </sebm-google-map-marker>
 </sebm-google-map>

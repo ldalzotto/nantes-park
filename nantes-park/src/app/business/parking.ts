@@ -1,8 +1,9 @@
-export class Parking {
-    parking: Map<string,ParkDetail>;
+export class ParkingsData {
+    parkDataList: Array<ParkingData>;
 }
 
-class ParkDetail{
-    location: number[];
-    id: number;
+export class ParkingData {
+  name: string;
+  location: Array<number>;
 }
+
