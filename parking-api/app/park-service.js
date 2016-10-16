@@ -2,14 +2,15 @@
 
 var dataLocation = new Map();
 
-//TODO système de cache pour la récupération du csv
+var csvParkingDatas = new Map();
+
 //TODO Utilser des maps pour les objets de parkings
 
 module.exports = {
     getDataFromRawParking: function(generalParkData) {
 
-        return new Promise((resolve) => {
-            extractDataFromCsv(generalParkData).then((result) => {
+        return new Promise((resolve, error) => {
+            getParkingListFromRawOpenDataApi(generalParkData).then((result) => {
                 resolve(result);
             })
         })
@@ -17,48 +18,58 @@ module.exports = {
     },
 
     getParkingDataInfo: function(id) {
-        return getParkingsDataInfoFromId(id);
+        return getIHMParkingsDataInfoFromId(id);
     }
 
 };
 
-function getParkingsDataInfoFromId(id){
-    var parkInfo = new Map();
-    var fastCsv = require('fast-csv');
-
-    return new Promise((resolve, reject) => {
-        fastCsv.fromPath('./parking-api/app/documents/24440040400129_NM_NM_00022_LOC_EQUIPUB_MOBILITE_NM_STBL.csv')
-            .on("data", function (data) {
-                if(data[0] === id) {
-                    parkInfo.set(data[0], data[1]);
-                }
-            }).on("end", function () {
-            resolve(parkInfo);
-        });
+function getIHMParkingsDataInfoFromId(id){
+    return new Promise((resolve) => {
+        getDataFromCacheOrCsv().then((result) => {
+            currentPark = result.get(id);
+            if(currentPark){
+                returnIHMData = new IHMParkingData(currentPark.id, currentPark.name);
+            }
+            resolve(returnIHMData);
+        })
     });
-
 }
 
-function extractDataFromCsv(generalParkData){
+function getParkingListFromRawOpenDataApi(generalParkData){
     return new Promise((resolve, reject) => {
-                var fastCsv    = require('fast-csv');
-                var test = fastCsv.fromPath('./parking-api/app/documents/24440040400129_NM_NM_00022_LOC_EQUIPUB_MOBILITE_NM_STBL.csv')
+            getDataFromCacheOrCsv().then((result) =>{
+                parkingsFromApi = new RawParkings(generalParkData.body);
+                var parkingsData = new ParkingsDataOutput();
+                parkingsFromApi.parkList.forEach((element) => {
+                    currentPark = result.get(element.IdObj);
+                    if(currentPark && element.Grp_nom){
+                        parkingsData.parkDataList.push(currentPark);
+                    }
+                });
+                resolve(parkingsData);
+            });
+    })
+}
+
+function getDataFromCacheOrCsv() {
+    return new Promise((resolve, reject) => {
+        var fastCsv    = require('fast-csv');
+        if (csvParkingDatas.size !== 0){
+            resolve(csvParkingDatas);
+        } else {
+            var isFisrtLine = true;
+            fastCsv.fromPath('./parking-api/app/documents/24440040400129_NM_NM_00022_LOC_EQUIPUB_MOBILITE_NM_STBL.csv')
                 .on("data", function(data){
-                    dataLocation.set(data[0], data[14]);
+                    if(!isFisrtLine){
+                        csvParkingDatas.set(data[0], new CsvParkingData(data[0],data[1],data[2],data[3],data[4],data[5],data[6],
+                            data[7],data[8],data[9],data[10],data[11],data[12],data[13],JSON.parse(data[14])));
+                    } else {
+                        isFisrtLine = false;
+                    }
                 }).on("end", function(){
-
-                        parkingsFromApi = new RawParkings(generalParkData.body);
-                        var parkingsData = new ParkingsDataOutput();
-
-                        parkingsFromApi.parkList.forEach((element) => {
-                            if(dataLocation.get(element.IdObj) && element.Grp_nom){
-                                parkingData = new ParkingData(element.Grp_nom, JSON.parse(dataLocation.get(element.IdObj)));
-                                parkingsData.parkDataList.push(parkingData);
-                            }
-                        });
-
-                     resolve(parkingsData);
-                })
+                    resolve(csvParkingDatas);
+            })
+        }
     })
 }
 
@@ -89,7 +100,26 @@ function ParkingsDataOutput() {
     this.parkDataList = [];
 }
 
-function ParkingData(name, location) {
+function CsvParkingData(id, name, theme, libTheme, categorie, libCategorie, type, libType,
+            statut, commune, adresse, telephone, web, codePostal, location) {
+    this.id = id;
     this.name = name;
+    this.theme = theme;
+    this.libTheme = libTheme;
+    this.categorie = categorie;
+    this.libCategorie = libCategorie;
+    this.type = type;
+    this.libType = libType;
+    this.statut = statut;
+    this.commune = commune;
+    this.addresse = adresse;
+    this.telephone = telephone;
+    this.web = web;
+    this.codePostal = codePostal;
     this.location = location;
+}
+
+function IHMParkingData(id, name) {
+    this.id = id;
+    this.name = name;
 }
