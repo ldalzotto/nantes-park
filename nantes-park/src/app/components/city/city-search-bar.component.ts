@@ -41,12 +41,13 @@ export class CitySearchBarComponent implements OnInit {
   }
 
   ngOnCitySelected(): void{
-    this.parkService.getListOfParkFromCity(this.selectedCity)
+    this.parkService.getListOfParkFromCityWithCache(this.selectedCity)
       .subscribe(result => {
         this.receivedData = result;
         this.parkService.getParksFromGenericOpenData(this.receivedData).subscribe(result => {
           this.onMapUpdate.emit(result);
-        })
+        });
+        //TODO recherche les places disponibles pour chaques parkings (avec l'id associé)
       }, error => {this.errorMessage=error;})
   }
 
