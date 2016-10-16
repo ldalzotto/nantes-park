@@ -35,7 +35,7 @@ export class ParkService {
   constructor(private http: Http){};
 
   /**
-   * Opendata cache cleared every 10 secends
+   * Opendata cache cleared every 5 minutes
    */
   manageGenericOpenDataCache(){
       this.isGenericOpenDataCached = true;
@@ -71,9 +71,10 @@ export class ParkService {
           .catch(this.handleError)
   }
 
-  //getParkSpaceInfo(genericOpenData: GenericOpenData): Observable<ParkSpaceData> {
-    //console.log("getting parkspace from generic data :");
-  //}
+  /*
+  getParkSpaceInfo(genericOpenData: GenericOpenData): Observable<ParkSpaceData> {
+    console.log("getting parkspace from generic data :");
+  }*/
 
 
 

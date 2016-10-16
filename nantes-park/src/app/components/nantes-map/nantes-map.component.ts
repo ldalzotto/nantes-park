@@ -7,6 +7,7 @@ import { NantesCoord } from '../../nantes-park.constants';
 import {ParkService} from "../../services/park.service";
 import {MarkerManager, SebmGoogleMapMarker} from "angular2-google-maps/core";
 import {ParkingsData, ParkingData} from "../../business/parking";
+import {GenericOpenData, ParkingGroup} from "../../business/opendata/opendata";
 
 @Component({
   selector: 'nantes-map',
@@ -24,6 +25,8 @@ export class NantesMapComponent implements OnInit{
 
   private parkList : Array<ParkingData>;
 
+  //TODO map id/places pour l'affichage des places disponibles
+
   public updateMap(parkList: ParkingsData){
     console.log("updating map");
     this.parkList = parkList.parkDataList;
@@ -35,7 +38,13 @@ export class NantesMapComponent implements OnInit{
   }
 
   public markerClicked(id: number){
-
+      this.parkService.getListOfParkFromCityWithCache("").subscribe((result: GenericOpenData) => {
+        console.log("Marker clicked :");
+        result.opendata.answer.data.Groupes_Parking.Groupe_Parking.forEach((parking:ParkingGroup) => {
+            if(parking.IdObj === id) {
+            }
+        })
+      })
   }
 
 }

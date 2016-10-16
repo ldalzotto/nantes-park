@@ -19,7 +19,9 @@ class ParkingGroups {
     Groupe_Parking: ParkingGroup[];
 }
 
-class ParkingGroup {
+export class ParkingGroup {
     Grp_complet: number;
     Grp_disponible: number;
+    Grp_exploitation: number;
+    IdObj: number;
 }
