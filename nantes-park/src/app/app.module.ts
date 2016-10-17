@@ -9,10 +9,11 @@ import {CommonModule} from "@angular/common";
 import {AgmCoreModule, MarkerManager, GoogleMapsAPIWrapper} from "angular2-google-maps/core";
 import {CitySearchBarComponent} from "./components/city/city-search-bar.component";
 import {ParkService} from "./services/park.service";
+import {DebugBoxComponent} from "./components/debug-box/debug-box.component";
 
 @NgModule({
   declarations: [
-    AppComponent, NantesMapComponent, CitySearchBarComponent
+    AppComponent, NantesMapComponent, CitySearchBarComponent, DebugBoxComponent
   ],
   imports: [
     BrowserModule,
