@@ -1,1 +1,5 @@
-<div class="transbox"> <p>Future debug box</p> </div>
+<div (mousedown)="clickingDebugBox($event)"
+     (mousemove)="mouseMoving($event)" (mouseup)="existingDebugBox($event)"
+     class="transbox" id="debugBox">
+  <input type="checkbox" (change)="changeMockedWSStatus()"/> Mocking external call
+</div>

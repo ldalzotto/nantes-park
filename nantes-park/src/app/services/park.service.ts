@@ -9,6 +9,7 @@ import {GenericOpenData} from "../business/opendata/opendata";
 import {ParkingsData, ParkSpaceData} from "../business/parking";
 import {from} from "rxjs/observable/from";
 import {mergeNsAndName} from "@angular/compiler/src/ml_parser/tags";
+import updateLanguageServiceSourceFile = ts.updateLanguageServiceSourceFile;
 
 @Injectable()
 export class ParkService {
@@ -19,20 +20,24 @@ export class ParkService {
   genericOpenData : any;
 
   private isGenericOpenDataCached : boolean = false;
+  private isGenericOpenDataMocked : boolean;
 
   getListOfParkFromCityWithCache(city:string): Observable<GenericOpenData> {
-    if (this.isGenericOpenDataCached) {
-      console.log("Get data from opendata cache");
-      return Observable.of(this.genericOpenData);
-    } else {
-      return this.http.get(this.parkNantesUrl)
-        .map((data) => this.extractData(data))
-        .catch(this.handleError)
-        .finally(() => this.manageGenericOpenDataCache());
-    }
+      if (this.isGenericOpenDataCached) {
+        console.log("Get data from opendata cache");
+        return Observable.of(this.genericOpenData);
+      } else {
+        return this.http.get(this.parkNantesUrl)
+          .map((data) => this.extractData(data))
+          .catch(this.handleError)
+          .finally(() => this.manageGenericOpenDataCache());
+      }
+
   }
 
-  constructor(private http: Http){};
+  constructor(private http: Http){
+    this.isGenericOpenDataMocked = false;
+  };
 
   /**
    * Opendata cache cleared every 5 minutes
@@ -69,6 +74,11 @@ export class ParkService {
     return this.http.post(this.parkingApiUrl, genericOpenData.opendata.answer.data.Groupes_Parking.Groupe_Parking)
           .map(this.extractData)
           .catch(this.handleError)
+  }
+
+  public updateGenericOpenDataMockedStatus(value: boolean):void {
+    this.isGenericOpenDataMocked = value;
+    console.log(this.isGenericOpenDataMocked);
   }
 
   /*
