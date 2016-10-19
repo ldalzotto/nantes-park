@@ -1,5 +1,5 @@
 <div (mousedown)="clickingDebugBox($event)"
-     (mousemove)="mouseMoving($event)" (mouseup)="existingDebugBox($event)"
+     (mousemove)="mouseMoving($event)" (mouseup)="existingDebugBox($event)" (mouseout)="existingDebugBox($event)"
      class="transbox" id="debugBox">
   <input type="checkbox" (change)="changeMockedWSStatus()"/> Mocking external call
 </div>
