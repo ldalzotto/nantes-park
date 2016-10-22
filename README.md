@@ -5,6 +5,7 @@
 ###Fonction
 - Ajouter un bouton mentionnant permettant d'indiquer et de se positionner sur la position actuelle
 - Sur l'info bulle, ajouter un bouton "go-to"
+- Modifier la couleur de l'icone parking en fonction du status des places
 
 ###Technique
 - Déplacer la récupération des info de places de markerClicked vers updateMap
