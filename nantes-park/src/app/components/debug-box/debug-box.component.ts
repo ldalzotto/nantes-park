@@ -1,6 +1,6 @@
 import {Component} from "@angular/core/src/metadata/directives";
 import {element} from "protractor";
-import {OnInit} from "@angular/core";
+import {OnInit, Output, EventEmitter} from "@angular/core";
 import {ParkService} from "../../services/park.service";
 /**
  * Created by ldalzotto on 18/10/2016.
@@ -9,13 +9,12 @@ import {ParkService} from "../../services/park.service";
 @Component({
   selector: 'debug-box',
   templateUrl: './debug-box.component.html',
-  styleUrls: ['./debug-box.component.css'],
-  providers: [ParkService]
+  styleUrls: ['./debug-box.component.css']
 })
 export class DebugBoxComponent {
 
 
-  constructor(private parkService: ParkService) {
+  constructor() {
   }
 
   private isClicked: boolean = false;
@@ -33,6 +32,8 @@ export class DebugBoxComponent {
 
   private afterMouseX: number;
   private afterMouseY: number;
+
+  @Output() onMockUpdate = new EventEmitter();
 
   public clickingDebugBox(event: MouseEvent){
       this.isClicked = true;
@@ -64,7 +65,9 @@ export class DebugBoxComponent {
 
   public changeMockedWSStatus(){
     this.isMockedWSEnabled = !this.isMockedWSEnabled;
-    this.parkService.updateGenericOpenDataMockedStatus(this.isMockedWSEnabled)
+
+    this.onMockUpdate.emit(this.isMockedWSEnabled);
+
     if(this.isMockedWSEnabled) {
       console.log("Mocking external call enabled");
     } else {

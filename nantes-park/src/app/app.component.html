@@ -2,8 +2,9 @@
   {{title}}
 </h1>
 <nantes-map #nantesMap></nantes-map>
-<city-search-bar
+<city-search-bar #searchCityBar
  (onMapUpdate)="nantesMap.updateMap($event)">
 </city-search-bar>
-<debug-box></debug-box>
+<debug-box #debugBox
+ (onMockUpdate)="nantesMap.changeServiceMockedStatus($event)"></debug-box>
 

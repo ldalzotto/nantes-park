@@ -1,21 +1,19 @@
 /**
  * Created by Loic on 05/10/2016.
  */
-import {Injectable} from "@angular/core";
+import {Injectable, EventEmitter} from "@angular/core";
 import {Observable} from "rxjs";
 import 'rxjs/add/operator/map'
 import {Http, Response, Headers, RequestOptions } from "@angular/http";
 import {GenericOpenData} from "../business/opendata/opendata";
 import {ParkingsData, ParkSpaceData} from "../business/parking";
-import {from} from "rxjs/observable/from";
-import {mergeNsAndName} from "@angular/compiler/src/ml_parser/tags";
-import updateLanguageServiceSourceFile = ts.updateLanguageServiceSourceFile;
 
 @Injectable()
 export class ParkService {
 
   parkNantesUrl : string = 'http://data.nantes.fr/api/getDisponibiliteParkingsPublics/1.0/39W9VSNCSASEOGV/?output=json';
   parkingApiUrl : string = 'http://localhost:8080/api/park-from-raw-data';
+  mockedOpenDataUrl : string = 'app/constants/mockedOpenData.json';
 
   genericOpenData : any;
 
@@ -23,6 +21,12 @@ export class ParkService {
   private isGenericOpenDataMocked : boolean;
 
   getListOfParkFromCityWithCache(city:string): Observable<GenericOpenData> {
+    if(this.isGenericOpenDataMocked) {
+      console.log("Get data from opendata mock");
+      return this.http.get(this.mockedOpenDataUrl)
+        .map((data) => this.extractData(data))
+        .catch(this.handleError)
+    } else {
       if (this.isGenericOpenDataCached) {
         console.log("Get data from opendata cache");
         return Observable.of(this.genericOpenData);
@@ -32,6 +36,8 @@ export class ParkService {
           .catch(this.handleError)
           .finally(() => this.manageGenericOpenDataCache());
       }
+
+    }
 
   }
 
@@ -76,8 +82,12 @@ export class ParkService {
           .catch(this.handleError)
   }
 
-  public updateGenericOpenDataMockedStatus(value: boolean):void {
-    this.isGenericOpenDataMocked = value;
+  updateGenericOpenDataMockedStatus(value: boolean):void {
+    if(value){
+      this.isGenericOpenDataMocked = true;
+    } else {
+      this.isGenericOpenDataMocked = false;
+    }
     console.log(this.isGenericOpenDataMocked);
   }
 

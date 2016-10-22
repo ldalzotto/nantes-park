@@ -47,4 +47,8 @@ export class NantesMapComponent implements OnInit{
       })
   }
 
+  public changeServiceMockedStatus(value: boolean){
+    this.parkService.updateGenericOpenDataMockedStatus(value);
+  }
+
 }
