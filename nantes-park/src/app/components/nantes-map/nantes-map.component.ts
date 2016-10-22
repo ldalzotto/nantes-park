@@ -6,7 +6,7 @@ import {OnInit} from "@angular/core";
 import { NantesCoord } from '../../nantes-park.constants';
 import {ParkService} from "../../services/park.service";
 import {MarkerManager, SebmGoogleMapMarker, GoogleMapsAPIWrapper} from "angular2-google-maps/core";
-import {ParkingsData, ParkingData} from "../../business/parking";
+import {ParkingsData, ParkingData, ParkSpaceData} from "../../business/parking";
 import {GenericOpenData, ParkingGroup} from "../../business/opendata/opendata";
 
 @Component({
@@ -47,10 +47,14 @@ export class NantesMapComponent implements OnInit{
     })
   }
 
-  public markerClicked(id: number){
+  public markerClicked(park: ParkingData){
+    var id = park.id;
       this.parkService.getListOfParkFromCityWithCache("").subscribe((result: GenericOpenData) => {
         console.log("Marker clicked :");
-        result.opendata.answer.data.Groupes_Parking.Groupe_Parking.forEach((parkingGroup:ParkingGroup) => {
+        this.parkService.getParkSpaceStatus(result, id).subscribe((result: ParkSpaceData) => {
+            park.parkSpaceData = result;
+        });
+        /*result.opendata.answer.data.Groupes_Parking.Groupe_Parking.forEach((parkingGroup:ParkingGroup) => {
             if(parkingGroup.IdObj === id) {
                 this.parkList.forEach((parking:ParkingData) => {
                   if(id === parking.id) {
@@ -60,7 +64,7 @@ export class NantesMapComponent implements OnInit{
                   }
                 })
             }
-        })
+        }) */
       })
   }
 

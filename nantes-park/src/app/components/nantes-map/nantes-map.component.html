@@ -3,12 +3,12 @@
                             [latitude]="park.location[0]"
                             [longitude]="park.location[1]"
                             [iconUrl]="parkingMarkerIcon"
-                            (markerClick) = "markerClicked(park.id)">
+                            (markerClick) = "markerClicked(park)">
         <sebm-google-map-info-window [disableAutoPan]="true">
-          <ol>
+          <ol *ngIf="park.parkSpaceData">
           <li>Name: {{park.name}}</li>
           <li>Address: {{park.addresse}} </li>
-          <li>Places: {{park.nbPlaceActuel}}/{{park.nbPlaceTotal}}</li>
+          <li>Places: {{park.parkSpaceData.leftSpace}}/{{park.parkSpaceData.totalSpace}}</li>
           </ol>
         </sebm-google-map-info-window>
     </sebm-google-map-marker>

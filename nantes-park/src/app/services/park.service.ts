@@ -5,8 +5,8 @@ import {Injectable, EventEmitter} from "@angular/core";
 import {Observable} from "rxjs";
 import 'rxjs/add/operator/map'
 import {Http, Response, Headers, RequestOptions } from "@angular/http";
-import {GenericOpenData} from "../business/opendata/opendata";
-import {ParkingsData, ParkSpaceData} from "../business/parking";
+import {GenericOpenData, ParkingGroup} from "../business/opendata/opendata";
+import {ParkingsData, ParkSpaceData, SpaceStatus} from "../business/parking";
 
 @Injectable()
 export class ParkService {
@@ -91,10 +91,40 @@ export class ParkService {
     console.log(this.isGenericOpenDataMocked);
   }
 
-  /*
-  getParkSpaceInfo(genericOpenData: GenericOpenData): Observable<ParkSpaceData> {
-    console.log("getting parkspace from generic data :");
-  }*/
+
+  getParkSpaceStatus(genericOpenData: GenericOpenData, id: number): Observable<ParkSpaceData> {
+    console.log("getting parkspace status from generic data :");
+
+    return this.extracted(genericOpenData, id)
+      .catch(this.handleError);
+  }
+
+  private extracted(genericOpenData: GenericOpenData, id: number): Observable<ParkSpaceData> {
+    var placeParkingData = new ParkSpaceData();
+    genericOpenData.opendata.answer.data.Groupes_Parking.Groupe_Parking.forEach((parking: ParkingGroup) => {
+      if (parking.IdObj === id) {
+
+        var spaceStatus: SpaceStatus;
+
+        var actualPlaces = parking.Grp_disponible;
+        var totalPlace = parking.Grp_exploitation;
+        var completPlace = parking.Grp_complet;
+
+        if ((totalPlace - actualPlaces) <= totalPlace / 2) {
+          spaceStatus = SpaceStatus.GOOD;
+        } else if ((totalPlace - actualPlaces) >= (totalPlace - completPlace)) {
+          spaceStatus = SpaceStatus.BAD;
+        } else {
+          spaceStatus = SpaceStatus.AVERAGE;
+        }
+
+        placeParkingData.leftSpace = actualPlaces;
+        placeParkingData.totalSpace = totalPlace;
+        placeParkingData.status = spaceStatus;
+      }
+    });
+    return Observable.of(placeParkingData);
+  }
 
 
 

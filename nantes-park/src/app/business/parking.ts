@@ -6,15 +6,17 @@ export class ParkingData {
   name: string;
   location: Array<number>;
   id: number;
-  addresse: string;
-  nbPlaceTotal: number;
-  nbPlaceActuel: number;
-  nbPlaceForComplet: number;
+  parkSpaceData: ParkSpaceData;
 }
 
 export class ParkSpaceData{
   id: number;
   totalSpace: number;
   leftSpace: number;
+  status: SpaceStatus;
+}
+
+export enum SpaceStatus {
+  GOOD, AVERAGE, BAD
 }
 
