@@ -5,7 +5,7 @@ import { Component, EventEmitter, Input, Output } from '@angular/core';
 import {OnInit} from "@angular/core";
 import { NantesCoord } from '../../nantes-park.constants';
 import {ParkService} from "../../services/park.service";
-import {MarkerManager, SebmGoogleMapMarker} from "angular2-google-maps/core";
+import {MarkerManager, SebmGoogleMapMarker, GoogleMapsAPIWrapper} from "angular2-google-maps/core";
 import {ParkingsData, ParkingData} from "../../business/parking";
 import {GenericOpenData, ParkingGroup} from "../../business/opendata/opendata";
 
@@ -20,7 +20,13 @@ export class NantesMapComponent implements OnInit{
   lat: number = NantesCoord[0];
   lng: number = NantesCoord[1];
 
-  constructor(private parkService: ParkService) {
+  clientLat: number;
+  clientLong: number;
+
+  parkingMarkerIcon : string = 'app/constants/parking-marker-icon.png';
+
+  constructor(private parkService: ParkService,
+    private _wrapper: GoogleMapsAPIWrapper) {
   }
 
   private parkList : Array<ParkingData>;
@@ -35,6 +41,10 @@ export class NantesMapComponent implements OnInit{
 
   ngOnInit(){
     this.parkList = [];
+    navigator.geolocation.getCurrentPosition((position: Position) => {
+      this.clientLat = position.coords.latitude;
+      this.clientLong = position.coords.longitude;
+    })
   }
 
   public markerClicked(id: number){
@@ -49,6 +59,14 @@ export class NantesMapComponent implements OnInit{
 
   public changeServiceMockedStatus(value: boolean){
     this.parkService.updateGenericOpenDataMockedStatus(value);
+  }
+
+  public isClientPositionKnown(): boolean {
+    if(this.clientLong && this.clientLat){
+      return true;
+    } else {
+      return false;
+    }
   }
 
 }
