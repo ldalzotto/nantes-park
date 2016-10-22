@@ -6,9 +6,9 @@
                             (markerClick) = "markerClicked(park.id)">
         <sebm-google-map-info-window [disableAutoPan]="true">
           <ol>
-            <li>Name: {{park.name}}</li>
-            <li>Address: {{park.addresse}} </li>
-            <li>Places: {{park.add}}</li>
+          <li>Name: {{park.name}}</li>
+          <li>Address: {{park.addresse}} </li>
+          <li>Places: {{park.nbPlaceActuel}}/{{park.nbPlaceTotal}}</li>
           </ol>
         </sebm-google-map-info-window>
     </sebm-google-map-marker>

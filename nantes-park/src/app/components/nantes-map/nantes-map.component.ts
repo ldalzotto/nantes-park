@@ -50,8 +50,15 @@ export class NantesMapComponent implements OnInit{
   public markerClicked(id: number){
       this.parkService.getListOfParkFromCityWithCache("").subscribe((result: GenericOpenData) => {
         console.log("Marker clicked :");
-        result.opendata.answer.data.Groupes_Parking.Groupe_Parking.forEach((parking:ParkingGroup) => {
-            if(parking.IdObj === id) {
+        result.opendata.answer.data.Groupes_Parking.Groupe_Parking.forEach((parkingGroup:ParkingGroup) => {
+            if(parkingGroup.IdObj === id) {
+                this.parkList.forEach((parking:ParkingData) => {
+                  if(id === parking.id) {
+                    parking.nbPlaceActuel = parkingGroup.Grp_disponible;
+                    parking.nbPlaceForComplet = parkingGroup.Grp_complet;
+                    parking.nbPlaceTotal = parkingGroup.Grp_exploitation;
+                  }
+                })
             }
         })
       })
