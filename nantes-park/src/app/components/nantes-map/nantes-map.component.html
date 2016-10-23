@@ -5,11 +5,15 @@
                             [iconUrl]="selectRightIconColor(park.parkSpaceData.status)"
                             (markerClick) = "markerClicked(park)">
         <sebm-google-map-info-window [disableAutoPan]="true">
+          <div>
           <ol *ngIf="park.parkSpaceData">
           <li>Name: {{park.name}}</li>
           <li>Address: {{park.addresse}} </li>
           <li>Places: {{park.parkSpaceData.leftSpace}}/{{park.parkSpaceData.totalSpace}}</li>
           </ol>
+            <button class="go-to">Go To</button>
+          </div>
+
         </sebm-google-map-info-window>
     </sebm-google-map-marker>
     <sebm-google-map-marker *ngIf="isClientPositionKnown()" [latitude]="clientLat"

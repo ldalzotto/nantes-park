@@ -10,6 +10,7 @@ import {AgmCoreModule, MarkerManager, GoogleMapsAPIWrapper} from "angular2-googl
 import {CitySearchBarComponent} from "./components/city/city-search-bar.component";
 import {ParkService} from "./services/park.service";
 import {DebugBoxComponent} from "./components/debug-box/debug-box.component";
+import {NantesMapInfoWindow} from "./components/info-window/nantes-map-google-map-info-window";
 
 @NgModule({
   declarations: [
