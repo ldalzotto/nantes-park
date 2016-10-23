@@ -9,6 +9,7 @@ import {ParkService} from "../../services/park.service";
 import {GenericOpenData} from "../../business/opendata/opendata"
 
 import {EventEmitter, Input, Output } from '@angular/core';
+import {ParkingsData, ParkingData, ParkSpaceData} from "../../business/parking";
 
 @Component({
   selector: 'city-search-bar',
@@ -44,10 +45,14 @@ export class CitySearchBarComponent implements OnInit {
     this.parkService.getListOfParkFromCityWithCache(this.selectedCity)
       .subscribe(result => {
         this.receivedData = result;
-        this.parkService.getParksFromGenericOpenData(this.receivedData).subscribe(result => {
+        this.parkService.getParksFromGenericOpenData(this.receivedData).subscribe((result:ParkingsData) => {
+          result.parkDataList.forEach((parkingData:ParkingData) => {
+            this.parkService.getParkSpaceStatusFromGenericOpenData(this.receivedData, parkingData.id).subscribe((result:ParkSpaceData) => {
+              parkingData.parkSpaceData = result;
+            })
+          });
           this.onMapUpdate.emit(result);
         });
-        //TODO recherche les places disponibles pour chaques parkings (avec l'id associé)
       }, error => {this.errorMessage=error;})
   }
 

@@ -2,7 +2,7 @@
     <sebm-google-map-marker *ngFor="let park of parkList"
                             [latitude]="park.location[0]"
                             [longitude]="park.location[1]"
-                            [iconUrl]="parkingMarkerIcon"
+                            [iconUrl]="selectRightIconColor(park.parkSpaceData.status)"
                             (markerClick) = "markerClicked(park)">
         <sebm-google-map-info-window [disableAutoPan]="true">
           <ol *ngIf="park.parkSpaceData">

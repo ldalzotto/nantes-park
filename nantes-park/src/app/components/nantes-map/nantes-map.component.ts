@@ -6,7 +6,7 @@ import {OnInit} from "@angular/core";
 import { NantesCoord } from '../../nantes-park.constants';
 import {ParkService} from "../../services/park.service";
 import {MarkerManager, SebmGoogleMapMarker, GoogleMapsAPIWrapper} from "angular2-google-maps/core";
-import {ParkingsData, ParkingData, ParkSpaceData} from "../../business/parking";
+import {ParkingsData, ParkingData, ParkSpaceData, SpaceStatus} from "../../business/parking";
 import {GenericOpenData, ParkingGroup} from "../../business/opendata/opendata";
 
 @Component({
@@ -23,10 +23,12 @@ export class NantesMapComponent implements OnInit{
   clientLat: number;
   clientLong: number;
 
-  parkingMarkerIcon : string = 'app/constants/parking-marker-icon.png';
+  parkingMarkerIconBlue : string = 'app/constants/parking-marker-icon.png';
+  parkingMarkerIconRed : string = 'app/constants/parking-marker-icon-red.png';
+  parkingMarkerIconGreen : string = 'app/constants/parking-marker-icon-green.png';
 
   constructor(private parkService: ParkService,
-    private _wrapper: GoogleMapsAPIWrapper) {
+    private _markerManager: MarkerManager) {
   }
 
   private parkList : Array<ParkingData>;
@@ -35,36 +37,29 @@ export class NantesMapComponent implements OnInit{
 
   public updateMap(parkList: ParkingsData){
     console.log("updating map");
-    this.parkList = parkList.parkDataList;
+    let _parkList: Array<ParkingData>;
+    _parkList = parkList.parkDataList;
+    _parkList.forEach((parkingData:ParkingData) => {
+      this.markerClicked(parkingData);
+    });
+    this.parkList = _parkList;
     //this.mapToArray(parkListMap).then((result) => this.parkList = result);
   }
 
   ngOnInit(){
-    this.parkList = [];
     navigator.geolocation.getCurrentPosition((position: Position) => {
       this.clientLat = position.coords.latitude;
       this.clientLong = position.coords.longitude;
-    })
+    });
   }
 
   public markerClicked(park: ParkingData){
     var id = park.id;
       this.parkService.getListOfParkFromCityWithCache("").subscribe((result: GenericOpenData) => {
         console.log("Marker clicked :");
-        this.parkService.getParkSpaceStatus(result, id).subscribe((result: ParkSpaceData) => {
+        this.parkService.getParkSpaceStatusFromGenericOpenData(result, id).subscribe((result: ParkSpaceData) => {
             park.parkSpaceData = result;
         });
-        /*result.opendata.answer.data.Groupes_Parking.Groupe_Parking.forEach((parkingGroup:ParkingGroup) => {
-            if(parkingGroup.IdObj === id) {
-                this.parkList.forEach((parking:ParkingData) => {
-                  if(id === parking.id) {
-                    parking.nbPlaceActuel = parkingGroup.Grp_disponible;
-                    parking.nbPlaceForComplet = parkingGroup.Grp_complet;
-                    parking.nbPlaceTotal = parkingGroup.Grp_exploitation;
-                  }
-                })
-            }
-        }) */
       })
   }
 
@@ -78,6 +73,16 @@ export class NantesMapComponent implements OnInit{
     } else {
       return false;
     }
+  }
+
+  selectRightIconColor(status: SpaceStatus): string{
+      if(status === SpaceStatus.GOOD){
+        return this.parkingMarkerIconGreen;
+      } else if (status === SpaceStatus.BAD) {
+        return this.parkingMarkerIconRed;
+      } else if (status === SpaceStatus.AVERAGE) {
+        return this.parkingMarkerIconBlue;
+      }
   }
 
 }

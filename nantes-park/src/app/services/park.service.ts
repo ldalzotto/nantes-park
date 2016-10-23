@@ -92,14 +92,13 @@ export class ParkService {
   }
 
 
-  getParkSpaceStatus(genericOpenData: GenericOpenData, id: number): Observable<ParkSpaceData> {
+  getParkSpaceStatusFromGenericOpenData(genericOpenData: GenericOpenData, id: number): Observable<ParkSpaceData> {
     console.log("getting parkspace status from generic data :");
-
     return this.extracted(genericOpenData, id)
       .catch(this.handleError);
   }
 
-  private extracted(genericOpenData: GenericOpenData, id: number): Observable<ParkSpaceData> {
+  extracted(genericOpenData: GenericOpenData, id: number): Observable<ParkSpaceData> {
     var placeParkingData = new ParkSpaceData();
     genericOpenData.opendata.answer.data.Groupes_Parking.Groupe_Parking.forEach((parking: ParkingGroup) => {
       if (parking.IdObj === id) {
@@ -125,6 +124,7 @@ export class ParkService {
     });
     return Observable.of(placeParkingData);
   }
+
 
 
 
